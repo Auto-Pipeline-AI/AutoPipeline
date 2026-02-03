@@ -1,0 +1,80 @@
+# ===============================
+# OS / Editor
+# ===============================
+.DS_Store
+Thumbs.db
+*.log
+
+.vscode/
+.idea/
+
+# ===============================
+# Node / Package managers
+# ===============================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ===============================
+# Env files
+# ===============================
+.env
+.env.local
+.env.*.local
+
+# ===============================
+# Build outputs
+# ===============================
+dist/
+build/
+out/
+.release/
+.tmp/
+
+# ===============================
+# Electron builder outputs
+# ===============================
+release/
+releases/
+installer/
+*.exe
+*.dmg
+*.AppImage
+*.deb
+*.rpm
+*.snap
+*.msi
+*.zip
+
+# Electron builder cache
+.electron-builder/
+.cache/
+
+# ===============================
+# Next.js
+# ===============================
+.next/
+.vercel/
+
+# ===============================
+# NestJS
+# ===============================
+apps/**/dist/
+apps/**/node_modules/
+
+# ===============================
+# Prisma / DB local files
+# ===============================
+*.db
+*.sqlite
+*.sqlite3
+
+# ===============================
+# Submodules: ignore their build artifacts (optional safety)
+# ===============================
+apps/**/.next/
+apps/**/out/
+apps/**/dist/
+apps/**/node_modules/
