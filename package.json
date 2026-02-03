@@ -1,0 +1,25 @@
+{
+  "name": "autopipeline",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Auto-Pipeline-AI/AutoPipeline.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Auto-Pipeline-AI/AutoPipeline/issues"
+  },
+  "homepage": "https://github.com/Auto-Pipeline-AI/AutoPipeline#readme",
+  "devDependencies": {
+    "electron": "^40.1.0",
+    "electron-builder": "^26.7.0"
+  }
+}
