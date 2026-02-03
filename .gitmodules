@@ -1,0 +1,6 @@
+[submodule "apps/backend"]
+	path = apps/backend
+	url = https://github.com/Auto-Pipeline-AI/backend.git
+[submodule "apps/frontend"]
+	path = apps/frontend
+	url = https://github.com/Auto-Pipeline-AI/frontend.git
