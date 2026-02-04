@@ -6,6 +6,9 @@ const http = require('http');
 let mainWindow;
 let backendProcess;
 let frontendProcess;
+let agentProcess;
+
+const AGENT_PORT = 8000;
 
 const isDev = process.argv.includes('--dev');
 const BACKEND_PORT = 3333;
@@ -108,6 +111,19 @@ function startFrontend() {
   frontendProcess.on('error', (err) => console.error('Frontend error:', err));
 }
 
+function startAgent() {
+  const agentDir = path.join(__dirname, '../apps/agent');
+  console.log('Starting Python agent service...');
+
+  agentProcess = spawn('python', ['api.py'], {
+    cwd: agentDir,
+    stdio: 'inherit',
+    shell: true,
+  });
+
+  agentProcess.on('error', (err) => console.error('Agent error:', err));
+}
+
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1200,
@@ -127,11 +143,13 @@ function createWindow() {
 function cleanup() {
   if (backendProcess) backendProcess.kill();
   if (frontendProcess) frontendProcess.kill();
+  if (agentProcess) agentProcess.kill();
 }
 
 app.on('ready', async () => {
   startBackend();
   startFrontend();
+  startAgent();
 
   try {
     console.log('Waiting for frontend server...');
