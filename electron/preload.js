@@ -1,4 +1,5 @@
-// electron/preload.js
-window.addEventListener('DOMContentLoaded', () => {
-  // Preload code if needed
+const { contextBridge, ipcRenderer } = require('electron');
+
+contextBridge.exposeInMainWorld('electronAPI', {
+  selectFolder: () => ipcRenderer.invoke('dialog:openFolder'),
 });
