@@ -3,6 +3,9 @@ const path = require('path');
 const { spawn } = require('child_process');
 const http = require('http');
 
+// Load environment variables from root .env
+require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
+
 let mainWindow;
 let backendProcess;
 let frontendProcess;
@@ -106,6 +109,7 @@ function startFrontend() {
     cwd: frontendDir,
     stdio: 'inherit',
     shell: true,
+    env: process.env, // Pass root .env vars (loaded by dotenv) to Next.js
   });
 
   frontendProcess.on('error', (err) => console.error('Frontend error:', err));
@@ -119,6 +123,7 @@ function startAgent() {
     cwd: agentDir,
     stdio: 'inherit',
     shell: true,
+    env: process.env, // Pass root .env vars (loaded by dotenv) to the agent
   });
 
   agentProcess.on('error', (err) => console.error('Agent error:', err));

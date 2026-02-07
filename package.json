@@ -4,11 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "setup": "npm install && npm run build",
+    "setup": "npm run setup:submodules && npm install && npm run setup:env && npm run build",
+    "setup:submodules": "git submodule update --init --recursive",
+    "setup:env": "node scripts/setup-env.js",
     "dev": "electron electron/main.js --dev",
     "start": "electron electron/main.js",
-    "build-backend": "cd apps/backend && (test -f .env || cp .env-example .env) && npm install && npx prisma generate && npm run build",
-    "build-frontend": "cd apps/frontend && (test -f .env || cp .env-example .env) && npm install && npm run build",
+    "build-backend": "cd apps/backend && npm install && npx prisma generate && npm run build",
+    "build-frontend": "cd apps/frontend && npm install && npm run build",
     "build-agent": "cd apps/agent && pip install -r requirements.txt",
     "build": "npm run build-backend && npm run build-frontend && npm run build-agent",
     "package": "electron-builder"
