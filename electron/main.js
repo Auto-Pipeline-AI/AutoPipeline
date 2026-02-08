@@ -28,6 +28,29 @@ ipcMain.handle('dialog:openFolder', async () => {
   return result.filePaths[0];
 });
 
+// IPC handler for saving files
+ipcMain.handle('dialog:saveFile', async (_event, content, defaultName) => {
+  const fs = require('fs');
+  const result = await dialog.showSaveDialog(mainWindow, {
+    title: 'Save Workflow',
+    defaultPath: defaultName || 'ci.yml',
+    filters: [
+      { name: 'YAML Files', extensions: ['yml', 'yaml'] },
+      { name: 'All Files', extensions: ['*'] },
+    ],
+  });
+
+  if (result.canceled || !result.filePath) return null;
+
+  try {
+    fs.writeFileSync(result.filePath, content, 'utf-8');
+    return result.filePath;
+  } catch (err) {
+    console.error('Failed to save file:', err);
+    return null;
+  }
+});
+
 function getDatabaseUrl() {
   const userDataPath = app.getPath('userData');
   const dbPath = path.join(userDataPath, 'autopipeline.db');
@@ -90,10 +113,10 @@ async function startBackend() {
     console.error('Migration error:', err);
   }
 
-  backendProcess = spawn('node', [path.join(__dirname, '../apps/backend/dist/main.js')], {
+  const backendScript = path.join(__dirname, '../apps/backend/dist/main.js');
+  backendProcess = spawn('node', [backendScript], {
     stdio: 'inherit',
     env: { ...process.env, PORT: String(BACKEND_PORT), DATABASE_URL },
-    shell: true,
   });
 
   backendProcess.on('error', (err) => console.error('Backend error:', err));
@@ -152,14 +175,19 @@ function cleanup() {
 }
 
 app.on('ready', async () => {
+  // Start backend (with migrations) and frontend/agent in parallel
   startBackend();
   startFrontend();
   startAgent();
 
   try {
-    console.log('Waiting for frontend server...');
-    await waitForServer(`http://localhost:${FRONTEND_PORT}`);
-    console.log('Frontend ready!');
+    // Wait for BOTH frontend and backend to be ready before opening the window
+    console.log('Waiting for frontend and backend servers...');
+    await Promise.all([
+      waitForServer(`http://localhost:${FRONTEND_PORT}`, 60000).then(() => console.log('Frontend ready!')),
+      waitForServer(`http://localhost:${BACKEND_PORT}`, 60000).then(() => console.log('Backend ready!')),
+    ]);
+    console.log('All services ready!');
     createWindow();
   } catch (err) {
     console.error('Failed to start:', err);
