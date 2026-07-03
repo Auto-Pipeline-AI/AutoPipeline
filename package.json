@@ -1,37 +1,22 @@
 {
   "name": "autopipeline",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "2.0.0",
+  "private": true,
+  "description": "One-command launcher that fetches and runs the AutoPipeline agent, backend, and frontend together as a single desktop app.",
   "scripts": {
-    "setup": "npm run setup:submodules && npm install && npm run setup:env && npm run build",
-    "setup:submodules": "git submodule update --init --recursive",
-    "setup:env": "node scripts/setup-env.js",
-    "dev": "electron electron/main.js --dev",
-    "start": "electron electron/main.js",
-    "build-backend": "cd apps/backend && npm install && npx prisma generate && npm run build",
-    "build-frontend": "cd apps/frontend && npm install && npm run build",
-    "build-agent": "cd apps/agent && pip install -r requirements.txt",
-    "build": "npm run build-backend && npm run build-frontend && npm run build-agent",
-    "package": "electron-builder"
+    "setup": "node scripts/setup.js",
+    "setup:reinstall": "node scripts/setup.js --reinstall",
+    "update": "node scripts/setup.js --update",
+    "start": "node scripts/run.js",
+    "dev": "node scripts/run.js",
+    "clean": "node scripts/clean.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Auto-Pipeline-AI/AutoPipeline.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/Auto-Pipeline-AI/AutoPipeline/issues"
-  },
-  "homepage": "https://github.com/Auto-Pipeline-AI/AutoPipeline#readme",
-  "devDependencies": {
-    "electron": "^40.1.0",
-    "electron-builder": "^26.7.0"
-  },
-  "dependencies": {
-    "dotenv": "^17.2.3"
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
   }
 }
