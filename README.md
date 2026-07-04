@@ -1,8 +1,17 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Auto-Pipeline-AI/AutoPipeline/main/assets/logo-animated.svg" alt="AutoPipeline AI" width="600"/>
+</p>
+
 # AutoPipeline
 
-One command to run the whole AutoPipeline product. This repo is a thin
-**launcher**: it fetches the three application repositories, installs their
-dependencies, and starts them together as a single desktop app.
+Hey 👋 — welcome to **AutoPipeline**, the one place where the whole
+AutoPipeline product comes together. Instead of juggling three separate
+repos and terminals, you run a single command here and get the full app —
+agent, backend, and frontend — talking to each other in one desktop window.
+
+This repo is a thin **launcher**: it fetches the three application
+repositories, installs their dependencies, and starts them together as a
+single desktop app.
 
 You type one prompt in the window and everything runs end to end:
 
