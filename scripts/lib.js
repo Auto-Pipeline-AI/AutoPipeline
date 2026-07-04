@@ -197,6 +197,36 @@ function waitForPort(port, host = '127.0.0.1', { timeout = 60000, interval = 700
   });
 }
 
+/**
+ * Kill whatever process is already listening on `port` (leftover from a
+ * previous run that didn't get torn down cleanly). No-op if the port is free.
+ */
+function freePort(port, name) {
+  if (IS_WIN) {
+    const res = spawnSync('netstat', ['-ano'], { encoding: 'utf8' });
+    const pids = new Set();
+    for (const line of (res.stdout || '').split('\n')) {
+      if (!line.includes('LISTENING')) continue;
+      const parts = line.trim().split(/\s+/);
+      const localAddr = parts[1] || '';
+      if (!localAddr.endsWith(`:${port}`)) continue;
+      const pid = Number(parts[parts.length - 1]);
+      if (pid && pid !== process.pid) pids.add(pid);
+    }
+    for (const pid of pids) {
+      warn(name || 'run', `Port ${port} was already in use by stale process ${pid} — killing it.`);
+      spawnSync('taskkill', ['/pid', String(pid), '/T', '/F'], { stdio: 'ignore' });
+    }
+  } else {
+    const res = spawnSync('lsof', ['-t', `-i:${port}`], { encoding: 'utf8' });
+    const pids = (res.stdout || '').split('\n').map((s) => s.trim()).filter(Boolean);
+    for (const pid of pids) {
+      warn(name || 'run', `Port ${port} was already in use by stale process ${pid} — killing it.`);
+      spawnSync('kill', ['-9', pid], { stdio: 'ignore' });
+    }
+  }
+}
+
 /** Find a Python >= 3.11 interpreter. Returns { cmd, pre } or null. */
 function detectPython() {
   const candidates = IS_WIN
@@ -238,6 +268,7 @@ module.exports = {
   killTree,
   waitForHttp,
   waitForPort,
+  freePort,
   detectPython,
   venvPython,
   fs,

@@ -21,6 +21,7 @@ const {
   killTree,
   waitForHttp,
   waitForPort,
+  freePort,
   venvPython,
   fs,
   path,
@@ -73,6 +74,14 @@ async function main() {
     log('run', 'Apps not fully installed — running setup first…');
     await setup({ update: false, reinstall: false });
   }
+
+  // Clear out any stale processes left over from a previous run that didn't
+  // shut down cleanly (e.g. terminal closed instead of Ctrl+C) — otherwise
+  // the new services fail to bind their ports and the whole stack exits
+  // immediately.
+  freePort(AGENT_PORT, 'run');
+  freePort(BACKEND_PORT, 'run');
+  freePort(FRONTEND_PORT, 'run');
 
   // 1) Agent -----------------------------------------------------------------
   log('run', 'Starting agent…');
