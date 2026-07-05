@@ -13,6 +13,12 @@ This repo is a thin **launcher**: it fetches the three application
 repositories, installs their dependencies, and starts them together as a
 single desktop app.
 
+<p align="center">
+  <img src="assets/demo.gif" alt="AutoPipeline analyzing a repo and generating a GitHub Actions workflow" width="820"/>
+</p>
+
+<p align="center"><em>One prompt → the agent analyzes the repo, plans, and generates a GitHub Actions pipeline live.</em></p>
+
 You type one prompt in the window and everything runs end to end:
 
 ```
@@ -90,6 +96,20 @@ The SQLite database is created automatically per-OS by the backend
 4. Watch the agent analyze, plan, generate and self-correct the YAML live.
 5. Approve the write, or copy / save the generated workflow file.
 
+## Watch the full demo
+
+<p align="center">
+  <a href="assets/demo.mp4"><img src="assets/demo-poster.jpg" alt="Watch the full AutoPipeline demo" width="820"/></a>
+</p>
+
+<p align="center"><em>▶ Click to play the full end-to-end walkthrough (with audio).</em></p>
+
 ## License
 
 MIT
+
+## Visitors
+
+<p align="center">
+  <img src="https://count.getloli.com/@auto-pipeline-ai?theme=rule34" alt="visitor counter" />
+</p>
